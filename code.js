@@ -1,16 +1,3 @@
-    const GRID = [
-      ["", "", "", "^", "", "", "", "", "", ""],
-      ["", "", "v", "", "~", "", "", "", "", ""],
-      ["", "v", "", "", "^", "^", "", "", "", ""],
-      ["", "", "", "", "^", "^", "", "", "", ""],
-      ["", "", "", "", "", "", "", "", "v", ""],
-      ["", "", "", "", "", "", "", "", "", ""],
-      ["", "", "", "", "", "", "", "", "", ""],
-      ["", "^", "~", "~", "", "", "", "^", "", ""],
-      ["", "^", "", "~", "~", "", "", "", "", ""],
-      ["", "^", "", "", "~", "~", "", "", "", ""],
-    ];
-
 function countRows() {
   var i = GRID.length;
   return i; 
@@ -104,13 +91,16 @@ function allCoords() {
 }
 
 function allCoordsGrid() {
-  var coords = GRID;
+  var coords = Array(countRows);
+  for (var q = 0; q < countColumns(); q++) {
+    coords[q] = new Array(countRows());
+  }
   var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   for (i=0;i<countRows();i++) {
     for (j=0;j<countColumns();j++) {
       column=alphabet.substr(j,1);
       row = i+1;
-      coords[i][j] = (column + row);
+      coords[i][j]=(column + row);
     }
   }
   return coords;
@@ -169,11 +159,15 @@ function percentageReport() {
 }
 
 function safetyReport() {
-  var newGrid = GRID;
-  for (i=0;i<countRows();i++) {
-    for (j=0;j<countColumns();j++) {
-      newGrid[i][j]=howDangerous(GRID[i][j]);
-    }
+  var coords = Array(countRows());
+  for (var q = 0; q < countColumns(); q++) {
+    coords[q] = new Array(countRows());
   }
-  return newGrid;
+  var newGrid = allCoordsGrid();
+  for (i=0;i<countRows();i++) {
+    coords[i]=newGrid[i].map(coords => {
+      return howDangerous(coords);
+	});
+  }
+  return coords;
 }
