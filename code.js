@@ -90,34 +90,90 @@ function lightColumn(input) {
   return column;
 }
 
-function allRocks() {
-  var rocks = [];
+function allCoords() {
+  var coords = [];
   var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  for (i=0; i<countRows(); i++) {
-    for (j=0; j<countColumns(); j++) {
+  for (i=0;i<countRows();i++) {
+    for (j=0;j<countColumns();j++) {
       column=alphabet.substr(j,1);
-      row=i+1;
-      cell=String(column + row);
-      if (isRock(cell)){
-        rocks.push(cell);
-      }
+      row = i+1;
+      coords.push(column + row);
     }
   }
-  return rocks;
+  return coords;
+}
+
+function allCoordsGrid() {
+  var coords = GRID;
+  var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  for (i=0;i<countRows();i++) {
+    for (j=0;j<countColumns();j++) {
+      column=alphabet.substr(j,1);
+      row = i+1;
+      coords[i][j] = (column + row);
+    }
+  }
+  return coords;
+}
+
+function allRocks() {
+  return allCoords().filter(coords => {
+    return isRock(coords);
+	});
 }
 
 function allCurrents() {
-  var currents = [];
-  var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  for (i=0; i<countRows(); i++) {
-    for (j=0; j<countColumns(); j++) {
-      column=alphabet.substr(j,1);
-      row=i+1;
-      cell=String(column + row);
-      if (isCurrent(cell)){
-        currents.push(cell);
-      }
+  return allCoords().filter(coords => {
+    return isCurrent(coords);
+	});
+}
+
+function allShips() {
+  return allCoords().filter(coords => {
+    return isShip(coords);
+	});
+}
+
+function firstRock() {
+  return allRocks()[0];
+}
+
+function firstCurrent() {
+  return allCurrents()[0];
+}
+
+function shipReport() {
+  var firstShip = allShips()[0];
+  var lastShip = allShips()[allShips().length-1];
+  var ships = [firstShip,lastShip];
+  return ships;
+}
+
+function howDangerous(input) {
+  if (isRock(input)) {
+    return 100;
+  } else if (isCurrent(input)) {
+    return 50;
+  } else {
+    return 0;
+  }
+}
+
+function percentageReport() {
+  var numRocks = allRocks().length;
+  var numCurrents = allCurrents().length;
+  var numSpots = allCoords().length;
+  var rockPercent = (numRocks/numSpots*100).toFixed(2);
+  var currentPercent = (numCurrents/numSpots*100).toFixed(2);
+  return [rockPercent,currentPercent];
+}
+
+function safetyReport() {
+  var newGrid = GRID;
+  for (i=0;i<countRows();i++) {
+    for (j=0;j<countColumns();j++) {
+      newGrid[i][j]=howDangerous(GRID[i][j]);
     }
   }
-  return currents;
+  return newGrid;
 }
