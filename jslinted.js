@@ -40,7 +40,7 @@ function lightCell(input) {
 }
 
 function isRock(cell) {
-  if (lightCell(cell) == "^") {
+  if (lightCell(cell) == '^') {
     return true;
   } else {
     return false;
@@ -48,7 +48,7 @@ function isRock(cell) {
 }
 
 function isCurrent(cell) {
-  if (lightCell(cell) == "~") {
+  if (lightCell(cell) == '~') {
     return true;
   } else {
     return false;
@@ -56,7 +56,7 @@ function isCurrent(cell) {
 }
 
 function isShip(cell) {
-  if (lightCell(cell) == "v") {
+  if (lightCell(cell) == 'v') {
     return true;
   } else {
     return false;
@@ -71,7 +71,7 @@ function lightColumn(input) {
   var i;
   var column = Array(countColumns);
   var columnPosition = convertColumn(input);
-  for (i=0; i < countRows(); i+=1) {
+  for (i=0; i < countRows(); i++) {
     column[i] = GRID[i][columnPosition];
   }
   return column;
@@ -79,9 +79,9 @@ function lightColumn(input) {
 
 function allCoords() {
   var coords = [];
-  var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  for (i=0;i<countRows();i+=1) {
-    for (j=0;j<countColumns();j+=1) {
+  var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  for (i=0;i<countRows();i++) {
+    for (j=0;j<countColumns();j++) {
       column=alphabet.substr(j,1);
       row = i+1;
       coords.push(column + row);
@@ -92,10 +92,10 @@ function allCoords() {
 
 function allCoordsGrid() {
   var coords = Array(countRows);
-  for (q = 0; q < countColumns(); q+=1) {
+  for (var q = 0; q < countColumns(); q++) {
     coords[q] = new Array(countRows());
   }
-  var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   for (i=0;i<countRows();i++) {
     for (j=0;j<countColumns();j++) {
       column=alphabet.substr(j,1);
@@ -109,19 +109,19 @@ function allCoordsGrid() {
 function allRocks() {
   return allCoords().filter(coords => {
     return isRock(coords);
-  });
+	});
 }
 
 function allCurrents() {
   return allCoords().filter(coords => {
     return isCurrent(coords);
-  });
+	});
 }
 
 function allShips() {
   return allCoords().filter(coords => {
     return isShip(coords);
-  });
+	});
 }
 
 function firstRock() {
@@ -159,24 +159,15 @@ function percentageReport() {
 }
 
 function safetyReport() {
-  var coords = Array(countColumns());
-  for (q = 0; q < countRows(); q+=1) {
+  var coords = Array(countRows());
+  for (q = 0; q < countColumns(); q++) {
     coords[q] = new Array(countRows());
   }
   var newGrid = allCoordsGrid();
-  for (i=0;i<countRows();i+=1) {
+  for (i=0;i<countRows();i++) {
     coords[i]=newGrid[i].map(coords => {
       return howDangerous(coords);
-  });
+	});
   }
   return coords;
-}
-
-function calcDistance(a,b) {
-  var ax = convertColumn(a);
-  var bx = convertColumn(b);
-  var ay = a.substr(1) - 1;
-  var by = b.substr(1) - 1;
-  distance = Math.sqrt((ax-bx)*(ax-bx)+(ay-by)*(ay-by)).toFixed(2);
-  return distance;
 }
